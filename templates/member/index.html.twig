@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Member index{% endblock %}
+
+{% block body %}
+    <h1>Member index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Registration_date</th>
+                <th>Biography</th>
+                <th>Reputation</th>
+                <th>Country</th>
+                <th>Valideted</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for member in members %}
+            <tr>
+                <td>{{ member.id }}</td>
+                <td>{{ member.registrationDate ? member.registrationDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ member.biography }}</td>
+                <td>{{ member.reputation }}</td>
+                <td>{{ member.country }}</td>
+                <td>{{ member.valideted }}</td>
+                <td>
+                    <a href="{{ path('app_member_show', {'id': member.id}) }}">show</a>
+                    <a href="{{ path('app_member_edit', {'id': member.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_member_new') }}">Create new</a>
+{% endblock %}
