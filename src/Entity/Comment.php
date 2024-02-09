@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ApiResource]
 class Comment
 {
     #[ORM\Id]
@@ -15,18 +18,22 @@ class Comment
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['comment_read'])]
     private ?string $comment = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['comment_read'])]
     private ?\DateTimeInterface $publication_date = null;
 
     #[ORM\ManyToOne]
+    #[Groups(['comment_read'])]
     private ?Answer $answer_subject_id = null;
 
     #[ORM\ManyToOne]
     private ?Question $question_subject_id = null;
 
     #[ORM\ManyToOne]
+    #[Groups(['comment_read'])]
     private ?Member $author_id = null;
 
     public function getId(): ?int

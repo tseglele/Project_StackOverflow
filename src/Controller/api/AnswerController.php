@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\api\Controller;
 
 use App\Entity\Answer;
 use App\Form\AnswerType;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/answer')]
+#[Route('api/answer')]
 class AnswerController extends AbstractController
 {
     #[Route('/', name: 'app_answer_index', methods: ['GET'])]

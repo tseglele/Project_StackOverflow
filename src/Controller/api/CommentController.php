@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\api\Controller;
 
 use App\Entity\Comment;
 use App\Form\CommentType;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/comment')]
+#[Route('api/comment')]
 class CommentController extends AbstractController
 {
     #[Route('/', name: 'app_comment_index', methods: ['GET'])]

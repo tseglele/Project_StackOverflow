@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/question')]
 class QuestionController extends AbstractController
@@ -43,8 +44,15 @@ class QuestionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_question_show', methods: ['GET'])]
-    public function show(Question $question): Response
+    public function show(Question $question,SerializerInterface $serializer): Response
     {
+        // Sérialiser l'objet Question en utilisant le groupe 'question_read'
+        $jsonContent = $serializer->serialize($question, 'json', ['groups' => 'question_read']);
+
+        // Retourner la réponse JSON
+        return new Response($jsonContent, 200, [
+            'Content-Type' => 'application/json'
+        ]);
         return $this->render('question/show.html.twig', [
             'question' => $question,
         ]);
@@ -71,7 +79,7 @@ class QuestionController extends AbstractController
     #[Route('/{id}', name: 'app_question_delete', methods: ['POST'])]
     public function delete(Request $request, Question $question, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$question->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $question->getId(), $request->request->get('_token'))) {
             $entityManager->remove($question);
             $entityManager->flush();
         }

@@ -7,7 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiResource;
 
+
+#[ApiResource]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -37,6 +40,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $first_name = null;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Administrator $admin_id = null;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Member $member_id = null;
 
     public function getId(): ?int
     {
@@ -140,6 +149,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstName(string $first_name): static
     {
         $this->first_name = $first_name;
+
+        return $this;
+    }
+
+    public function getAdminId(): ?Administrator
+    {
+        return $this->admin_id;
+    }
+
+    public function setAdminId(?Administrator $admin_id): static
+    {
+        $this->admin_id = $admin_id;
+
+        return $this;
+    }
+
+    public function getMemberId(): ?Member
+    {
+        return $this->member_id;
+    }
+
+    public function setMemberId(?Member $member_id): static
+    {
+        $this->member_id = $member_id;
 
         return $this;
     }

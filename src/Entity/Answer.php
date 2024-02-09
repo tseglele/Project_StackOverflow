@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\AnswerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: AnswerRepository::class)]
+#[ApiResource]
 class Answer
 {
     #[ORM\Id]
@@ -15,9 +18,11 @@ class Answer
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['answer_read'])]
     private ?string $answer = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['answer_read'])]
     private ?int $score = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -27,9 +32,11 @@ class Answer
     private ?Question $question_id = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['answer_read'])]
     private ?int $prefered = null;
 
     #[ORM\ManyToOne]
+    #[Groups(['answer_read'])]
     private ?Member $author_id = null;
 
     public function getId(): ?int
